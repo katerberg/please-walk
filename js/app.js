@@ -22,6 +22,14 @@ PLEASEWALK.ball = function() {
         context.fill();
         context.stroke();
     }
+    function handleBounding(direction) {
+        if (position[direction] < size) {
+            position[direction] += movementStrength;
+        }
+        if (position[direction] > (PLEASEWALK.boardSize[direction] - size)) {
+            position[direction] -= movementStrength;
+        }
+    }
 
     function advance() {
         if (moving.LEFT) {
@@ -36,6 +44,8 @@ PLEASEWALK.ball = function() {
         if (moving.DOWN) {
             position.y += movementStrength;
         }
+        handleBounding('x');
+        handleBounding('y');
     }
 
     function startMoving(direction) {
