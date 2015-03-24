@@ -4,10 +4,6 @@ var PLEASEWALK = {};
 PLEASEWALK.ball = function() {
     var size = 20,
         movementStrength = 1,
-        velocity = {
-            x: 3,
-            y: 3
-        },
         position = {
             x: 41,
             y: 21
@@ -18,9 +14,6 @@ PLEASEWALK.ball = function() {
             UP: false,
             DOWN: false
         };
-    function isBounded(distance) {
-        return (PLEASEWALK.boardSize < (distance + size) || distance <= size)
-    }
 
     function drawBall(context) {
         context.beginPath();
@@ -31,8 +24,6 @@ PLEASEWALK.ball = function() {
     }
 
     function advance() {
-        position.x += velocity.x;
-        position.y += velocity.y;
         if (moving.LEFT) {
             position.x -= movementStrength;
         }
@@ -44,12 +35,6 @@ PLEASEWALK.ball = function() {
         }
         if (moving.DOWN) {
             position.y += movementStrength;
-        }
-        if (isBounded(position.x)) {
-            velocity.x *= -1
-        }
-        if (isBounded(position.y)) {
-            velocity.y *= -1
         }
     }
 
@@ -71,7 +56,7 @@ PLEASEWALK.ball = function() {
 
 
 PLEASEWALK.game = (function() {
-    PLEASEWALK.boardSize = 400;
+    PLEASEWALK.boardSize = {y: 600, x: 1000};
     PLEASEWALK.frameRate = 10;
     var keyDirections = {
         37: 'LEFT',
@@ -84,8 +69,8 @@ PLEASEWALK.game = (function() {
 
     function init() {
         var canvas = $('#canvas');
-        canvas.attr('width', PLEASEWALK.boardSize);
-        canvas.attr('height', PLEASEWALK.boardSize);
+        canvas.attr('width', PLEASEWALK.boardSize.x);
+        canvas.attr('height', PLEASEWALK.boardSize.y);
         context = canvas[0].getContext('2d');
         ball = PLEASEWALK.ball();
         bindEvents();
@@ -94,7 +79,7 @@ PLEASEWALK.game = (function() {
     }
 
     function clearScreen() {
-        context.clearRect(0, 0, PLEASEWALK.boardSize, PLEASEWALK.boardSize);
+        context.clearRect(0, 0, PLEASEWALK.boardSize.y, PLEASEWALK.boardSize.y);
     }
 
     function bindEvents() {
