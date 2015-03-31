@@ -1,7 +1,7 @@
 (function() {
 var PLEASEWALK = {};
 
-PLEASEWALK.ball = function() {
+PLEASEWALK.character = function() {
     var size = 20,
         movementStrength = 1,
         position = {
@@ -75,14 +75,14 @@ PLEASEWALK.game = (function() {
         40: 'DOWN',
     },
     context,
-    ball;
+    character;
 
     function init() {
         var canvas = $('#canvas');
         canvas.attr('width', PLEASEWALK.boardSize.x);
         canvas.attr('height', PLEASEWALK.boardSize.y);
         context = canvas[0].getContext('2d');
-        ball = PLEASEWALK.ball();
+        character = PLEASEWALK.character();
         bindEvents();
 
         gameLoop();
@@ -97,7 +97,7 @@ PLEASEWALK.game = (function() {
             var key = event.which;
             var direction = keyDirections[key];
             if (direction) {
-                ball.startMoving(direction);
+                character.startMoving(direction);
                 event.preventDefault();
             }
         });
@@ -105,7 +105,7 @@ PLEASEWALK.game = (function() {
             var key = event.which;
             var direction = keyDirections[key];
             if (direction) {
-                ball.stopMoving(direction);
+                character.stopMoving(direction);
                 event.preventDefault();
             }
         });
@@ -114,8 +114,8 @@ PLEASEWALK.game = (function() {
 
     function gameLoop() {
         clearScreen();
-        ball.draw(context);
-        ball.advance();
+        character.draw(context);
+        character.advance();
         setTimeout(gameLoop, PLEASEWALK.frameRate);
     }
 
