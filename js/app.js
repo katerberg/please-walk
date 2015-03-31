@@ -26,9 +26,7 @@ PLEASEWALK.sound = function() {
     function startWalking() {
         if (!isPlaying) {
             isPlaying = true;
-            console.log(walking);
             walking.play();
-            console.log(walking);
         }
     }
 
@@ -40,8 +38,10 @@ PLEASEWALK.sound = function() {
     function toggle() {
         if (ambient.volume() === 0.0) {
             ambient.fadeIn(AMBIENT_VOLUME, 1000);
+            walking.unmute();
         } else {
             ambient.fadeOut(0.0, 500);
+            walking.mute();
         }
     }
 
