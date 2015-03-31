@@ -4,7 +4,9 @@ var PLEASEWALK = {};
 PLEASEWALK.sound = function() {
     var ambient,
         walking,
-        AMBIENT_VOLUME=0.5;
+        isPlaying,
+        AMBIENT_VOLUME=0.5,
+        WALKING_VOLUME=0.5;
 
     function init() {
         ambient = new Howl({
@@ -13,19 +15,29 @@ PLEASEWALK.sound = function() {
             autoplay: true,
             loop: true
         });
+        walking = new Howl({
+            urls: ['audio/walking.ogg', 'audio/walking.mp3'],
+            volume: WALKING_VOLUME,
+            autoplay: false,
+            loop: true
+        });
     }
 
     function startWalking() {
-        walking = new Howl({
-        });
-        
+        if (!isPlaying) {
+            isPlaying = true;
+            console.log(walking);
+            walking.play();
+            console.log(walking);
+        }
     }
+
     function stopWalking() {
+        isPlaying = false;
+        walking.stop();
     }
 
     function toggle() {
-        console.log(ambient);
-        console.log(ambient.volume());
         if (ambient.volume() === 0.0) {
             ambient.fadeIn(AMBIENT_VOLUME, 1000);
         } else {
@@ -80,7 +92,7 @@ PLEASEWALK.winTarget = function() {
     };
 }
 
-PLEASEWALK.character = function() {
+PLEASEWALK.character = function(sound) {
     var radius = 20,
         movementStrength = 1,
         position = {
@@ -153,13 +165,28 @@ PLEASEWALK.character = function() {
         handleBounding('x');
         handleBounding('y');
     }
+    function currentAmountOfMovements() {
+        var number = 0;
+        Object.keys(moving).forEach(function(direction) {
+            if (moving[direction]) {
+                number++;
+            }
+        });
+        return number;
+    }
 
     function startMoving(direction) {
+        if (currentAmountOfMovements() === 0) {
+            sound.startWalking();
+        }
         moving[direction] = true;
     }
 
     function stopMoving(direction) {
         moving[direction] = false;
+        if (currentAmountOfMovements() === 0) {
+            sound.stopWalking();
+        }
     }
 
     return {
@@ -194,9 +221,9 @@ PLEASEWALK.game = (function() {
         canvas.attr('width', PLEASEWALK.boardSize.x);
         canvas.attr('height', PLEASEWALK.boardSize.y);
         context = canvas[0].getContext('2d');
-        character = PLEASEWALK.character();
-        winTarget = PLEASEWALK.winTarget()
         sound = PLEASEWALK.sound();
+        character = PLEASEWALK.character(sound);
+        winTarget = PLEASEWALK.winTarget()
         $('#toggle-sound').on('click', function() {
             sound.toggle();
         });
