@@ -1,3 +1,8 @@
 #canvas {
     background: black;
 }
+
+.toggle-sound {
+    cursor: pointer;
+    float: right;
+}

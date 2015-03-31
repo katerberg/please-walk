@@ -1,6 +1,47 @@
 (function() {
 var PLEASEWALK = {};
 
+PLEASEWALK.sound = function() {
+    var ambient,
+        walking,
+        AMBIENT_VOLUME=0.5;
+
+    function init() {
+        ambient = new Howl({
+            urls: ['audio/ambient.ogg', 'audio/ambient.mp3'],
+            volume: AMBIENT_VOLUME,
+            autoplay: true,
+            loop: true
+        });
+    }
+
+    function startWalking() {
+        walking = new Howl({
+        });
+        
+    }
+    function stopWalking() {
+    }
+
+    function toggle() {
+        console.log(ambient);
+        console.log(ambient.volume());
+        if (ambient.volume() === 0.0) {
+            ambient.fadeIn(AMBIENT_VOLUME, 1000);
+        } else {
+            ambient.fadeOut(0.0, 500);
+        }
+    }
+
+    init();
+
+    return {
+        toggle: toggle,
+        startWalking: startWalking,
+        stopWalking: stopWalking
+    }
+}
+
 PLEASEWALK.winTarget = function() {
     coordinates = {}
 
@@ -31,7 +72,7 @@ PLEASEWALK.winTarget = function() {
         context.closePath();
     }
 
-    init()
+    init();
 
     return {
         coordinates: coordinates,
@@ -142,6 +183,7 @@ PLEASEWALK.game = (function() {
     },
     context,
     score,
+    sound,
     character,
     winTarget;
 
@@ -154,6 +196,10 @@ PLEASEWALK.game = (function() {
         context = canvas[0].getContext('2d');
         character = PLEASEWALK.character();
         winTarget = PLEASEWALK.winTarget()
+        sound = PLEASEWALK.sound();
+        $('#toggle-sound').on('click', function() {
+            sound.toggle();
+        });
         bindEvents();
 
         gameLoop();
