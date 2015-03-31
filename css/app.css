@@ -2,6 +2,18 @@
     background: black;
 }
 
+#please-walk-message {
+    padding-left: 350px;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 2em;
+    color: red;
+}
+
+#please-walk-message > img{
+    height: 60px;
+}
+
 .toggle-sound {
     cursor: pointer;
     float: right;
