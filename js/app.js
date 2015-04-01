@@ -5,8 +5,8 @@ PLEASEWALK.sound = function() {
     var ambient,
         walking,
         isPlaying,
-        AMBIENT_VOLUME=0.5,
-        WALKING_VOLUME=0.5;
+        AMBIENT_VOLUME=0.6,
+        WALKING_VOLUME=0.4;
 
     function init() {
         ambient = new Howl({
@@ -38,10 +38,10 @@ PLEASEWALK.sound = function() {
     function toggle() {
         if (ambient.volume() === 0.0) {
             ambient.fadeIn(AMBIENT_VOLUME, 1000);
-            walking.unmute();
+            walking.volume(WALKING_VOLUME);
         } else {
             ambient.fadeOut(0.0, 500);
-            walking.mute();
+            walking.volume(0.0);
         }
     }
 
@@ -96,8 +96,8 @@ PLEASEWALK.character = function(sound) {
     var radius = 20,
         movementStrength = 1,
         position = {
-            x: 41,
-            y: 21
+            x: 181,
+            y: (PLEASEWALK.boardSize.y - 41)
         },
         moving = {
             LEFT: false,
@@ -216,14 +216,14 @@ PLEASEWALK.game = (function() {
 
     function init() {
         var canvas = $('#canvas');
-        score = 0;
-        $('#score').text(score)
         canvas.attr('width', PLEASEWALK.boardSize.x);
         canvas.attr('height', PLEASEWALK.boardSize.y);
         context = canvas[0].getContext('2d');
+        score = 0;
+        $('#score').text(score);
         sound = PLEASEWALK.sound();
         character = PLEASEWALK.character(sound);
-        winTarget = PLEASEWALK.winTarget()
+        winTarget = PLEASEWALK.winTarget();
         $('#toggle-sound').on('click', function() {
             sound.toggle();
         });
