@@ -208,6 +208,7 @@ PLEASEWALK.game = (function() {
         39: 'RIGHT',
         40: 'DOWN',
     },
+    level,
     context,
     score,
     sound,
@@ -220,10 +221,12 @@ PLEASEWALK.game = (function() {
         canvas.attr('height', PLEASEWALK.boardSize.y);
         context = canvas[0].getContext('2d');
         score = 0;
+        level = 0;
         $('#score').text(score);
+        $('#level').text(level);
         sound = PLEASEWALK.sound();
         character = PLEASEWALK.character(sound);
-        winTarget = PLEASEWALK.winTarget();
+        winTarget = PLEASEWALK.winTarget(level);
         $('#toggle-sound').on('click', function() {
             sound.toggle();
         });
@@ -234,8 +237,9 @@ PLEASEWALK.game = (function() {
 
     function checkWin() {
         if (character.isInside(winTarget.coordinates.x, winTarget.coordinates.y, winTarget.coordinates.width, winTarget.coordinates.height)) {
-            $('#score').text(++score)
-            winTarget = PLEASEWALK.winTarget();
+            $('#score').text(++score);
+            $('#level').text(++level);
+            winTarget = PLEASEWALK.winTarget(level);
         }
     }
 

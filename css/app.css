@@ -10,6 +10,10 @@
     color: red;
 }
 
+#score {
+    padding-right: 16px;
+}
+
 #please-walk-message > img{
     height: 60px;
 }
